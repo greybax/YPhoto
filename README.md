@@ -1,0 +1,2 @@
+YandexPhotoViewer
+=================
