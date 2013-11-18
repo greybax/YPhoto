@@ -1,0 +1,52 @@
+﻿<!doctype html>
+<html ng-app="PhotoViewer">
+<head>
+	<script src="//code.jquery.com/jquery-1.10.2.min.js"> </script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.js"> </script>
+</head>
+
+<body>
+	<form name="test" method="get" action="https://oauth.yandex.ru/authorize">	
+		<input id="client_id" name="client_id" type="hidden" value="5c354623646d454cbee017d25ffa8601" />
+		<input id="response_type" name="response_type" type="hidden" value="token" /> 	
+		<input type="submit" value="Отправить">
+		<!-- http://api-fotki.yandex.ru/api/me/?oauth_token=access_token -->	
+	</form>
+	
+	<div ng-controller="FetchCtrl">
+		<input type="text" ng-model="url" size="80"/>
+		<button ng-click="fetch()">fetch</button><br>
+		<pre>http status code: {{status}}</pre>
+		<pre>http response data: {{data}}</pre>
+    </div>	
+	
+</body>
+</html>
+
+<script type="text/javascript">
+angular.module('PhotoViewer', []).config(['$httpProvider', function($httpProvider) {
+	delete $httpProvider.defaults.headers.common['X-Requested-With'];
+}]);
+
+
+function FetchCtrl($scope, $http, $templateCache) {
+	$scope.method = 'GET';
+	$scope.url = 'http://api-fotki.yandex.ru/api/users/aleks2042/albums/';
+
+	$scope.fetch = function() {
+		$http.jsonp($scope.url, {params: {format:'json', callback:'JSON_CALLBACK'}}).then(
+		function(data) {
+			$scope.data = data;		
+			$scope.status = status;
+		},
+		function(data) {
+			$scope.data = data;
+		});
+	};
+ 
+	$scope.updateModel = function(method, url) {
+		$scope.method = method;
+		$scope.url = url;
+	};
+}
+</script>
