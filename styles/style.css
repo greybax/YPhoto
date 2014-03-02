@@ -1,0 +1,45 @@
+#albums {
+	width: 100%;
+	display: table;
+}
+
+.rowDiv {
+	display:table-row
+}
+
+.photo {
+	display: inline-block;
+	width: 20%;
+	margin: 0;
+	padding: 7px 0 23px;
+}
+
+#updateAjaxDiv {
+    padding-bottom: 10px;
+}
+
+button, input[type="button"], input[type="submit"], input[type="reset"], .button {
+    background: url("../images/button-sprite.png") repeat-x scroll 0 0 #EAEAEA;
+    border: 1px solid #999999;
+    color: #000000;
+    font-family: helvetica,Arial,Sans-Serif;
+    height: 26px;
+    margin-right: 10px;
+    outline: medium none;
+    padding: 2px 8px;
+    text-decoration: none;
+}
+
+button:hover, input[type="button"]:hover, input[type="submit"]:hover, input[type="reset"]:hover, .button:hover {
+    background-color: #DCDCDC;
+    background-position: 0 -50px;
+}
+
+.ksb {
+    background-repeat: repeat-x;
+    font-family: arial;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 0;
+    width: 370px !important;
+}
