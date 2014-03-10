@@ -3,15 +3,34 @@
 	display: table;
 }
 
-.rowDiv {
+#photos {
+    background: none repeat scroll 0 0 #EAEAEA;
+    border-radius: 0 0 4px 4px;
+    margin: 0 auto;
+    max-width: 1024px;
+}
+
+.topRow {
 	display:table-row
 }
 
+.album-bag{
+    display: table-cell;
+    width: 20%;
+}
+
 .photo {
-	display: inline-block;
-	width: 20%;
-	margin: 0;
-	padding: 7px 0 23px;
+    display: inline-block;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 0 1px rgba(255, 255, 255, 0.1);
+    margin: 0 20px 10px;
+	padding: 28px 12px;
+    position: relative;
+}
+
+.photo:hover {
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04), 0 1px 5px rgba(0, 0, 0, 0.2);
+    transition-delay: 0s;
+    transition-duration: 0.1s;
 }
 
 #updateAjaxDiv {

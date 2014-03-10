@@ -8,12 +8,12 @@
 	<link href="styles/glisse.css" rel="stylesheet" />
 </head>
 
-<body>	
+<body>
 	<input type="submit" onclick="FetchCtrl(); return false;" value="Отправить" />
 
 	<div id="updateAjaxDiv">
 		<div id="albums">
-			<div class="rowDiv"> </div>
+			<div class="topRow"> </div>
 		</div>
 		<div id="photos"> </div>
 	</div>
@@ -25,6 +25,9 @@
 </html>
 
 <script type="text/javascript">
+
+var currentAlbum;
+
 function FetchCtrl() {
 	$.ajax({
 		type: "GET",
@@ -32,36 +35,45 @@ function FetchCtrl() {
 		dataType: "jsonp",
 		url: "http://api-fotki.yandex.ru/api/users/aleks2042/albums/?format=json"
 	}).done(function(data) {
-		for(var i=0; i < data.entries.length; i++)
-		{
-			if (i != 0 && i % 4 == 0)
-				$('#albums').append('<div class="rowDiv"><div>');
-
-			$('#albumTmpl').tmpl(data.entries[i]).appendTo('.rowDiv');
+		for(var i=0; i < data.entries.length; i++) {
+			data.entries[i].id = 'album_' + i;
+			$('#albumTmpl').tmpl(data.entries[i]).appendTo('.topRow');
+			
+			$('<div/>', {id: data.entries[i].id}).appendTo('#photos');
 		}
 	});
 }
 
-function GetPhotosInAlbum(url) {
+function GetPhotosInAlbum(url, albumId, showNext = false) {
 	$.ajax({
 		type: "GET",
 		crossDomain: true,
 		dataType: "jsonp",
 		url: url
 	}).done(function(data) {
+		
 		$('#next input').remove();
-		GetPhotosUrl(data);	
+		if (showNext) {
+			GetPhotosUrl(data, albumId);
+		}
+		else if(!$('#photos > ' + '#' + albumId + ' > div').is('.photo') || currentAlbum != albumId) {
+			$('#photos > div').hide();
+			$('#'+albumId).show();
+			GetPhotosUrl(data, albumId);
+		}
+		
+		currentAlbum = albumId;
 	});
 }
 
-function GetPhotosUrl(data)
+function GetPhotosUrl(data, albumId)
 {
-	var entries = data.entries;
-	for(var i=0; i < entries.length; i++) {
-		$('#photosTmpl').tmpl(entries[i]).appendTo('#photos');
+	for(var i=0; i < data.entries.length; i++) {
+		$('#photosTmpl').tmpl(data.entries[i]).appendTo('#'+albumId);
 	}
+	data.id = albumId;
+	
 	$('#nextTmpl').tmpl(data).appendTo('#next');
-	$('#albums').hide();
 
 	$('.pics').glisse({
 		changeSpeed: 550,
@@ -74,21 +86,21 @@ function GetPhotosUrl(data)
 
 <script id="albumTmpl" type="text/x-jquery-tmpl">
 	<div class="album-bag">
-		<h2>
-			${title}
-		</h2>
-		<a onclick="GetPhotosInAlbum('${links.photos}'); return false;">
-			<img class="pics" src="${img.S.href}"/>
+		<a onclick="GetPhotosInAlbum('${links.photos}', '${id}'); return false;">
+			<img src="${img.S.href}"/>
 		</a>
+		<h4>
+			${title}
+		</h4>
 	</div>
 </script>
 
 <script id="photosTmpl" type="text/x-jquery-tmpl">
 	<div class="photo">
-		<img class="pics" src="${img.S.href}" data-glisse-big="${img.orig.href}" rel="group1"/>
+		<img class="pics" src="${img.S.href}" data-glisse-big="${img.XXL.href}" rel="group1"/>
 	</div>
 </script>
 
 <script id="nextTmpl" type="text/x-jquery-tmpl">
-	<input type="button" onclick="GetPhotosInAlbum('${links.next}'); return false;" class="ksb" id="smb" value="Еще фото">
+	<input type="button" onclick="GetPhotosInAlbum('${links.next}', '${id}', true); return false;" class="ksb" id="smb" value="Еще фото">
 </script>
