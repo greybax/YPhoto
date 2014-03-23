@@ -1,2 +1,2 @@
-YandexPhotoViewer
+YPhoto
 =================
