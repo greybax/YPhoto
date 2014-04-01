@@ -1,6 +1,5 @@
 #albums {
-	width: 100%;
-	display: table;
+	width: 90%;
 }
 
 #photos {
@@ -8,15 +7,6 @@
     border-radius: 0 0 4px 4px;
     margin: 0 auto;
     max-width: 1024px;
-}
-
-.topRow {
-	display:table-row
-}
-
-.album-bag{
-    display: table-cell;
-    width: 20%;
 }
 
 .photo {

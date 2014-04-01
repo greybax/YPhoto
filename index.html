@@ -3,23 +3,30 @@
 		<!--Libs -->
 		<script type="text/javascript" src="js/lib/jquery-1.10.2.min.js"></script>
 		<script type="text/javascript" src="js/lib/jquery.tmpl.js"></script>
+		<script type="text/javascript" src="js/lib/slick.js"></script>
 		<script type="text/javascript" src="js/lib/glisse.js"></script>
 		
 		<!-- Modules -->
 		<script type="text/javascript" src="js/Auth.js"></script>
 		<script type="text/javascript" src="js/YPhoto.js"></script>
-				
+
 		<!-- CSS -->
-		<link href="styles/style.css" rel="stylesheet" />
-		<link href="styles/glisse.css" rel="stylesheet" />
+		<link rel="stylesheet" href="styles/slick.css"/>
+		<link rel="stylesheet" href="styles/style.css"/>
+		<link rel="stylesheet" href="styles/glisse.css"/>
 	</head>
 
 	<body>
-		<input type="submit" onclick="YPhoto.getAlbums();" value="Отправить" />
+		<input id="login" value="abonny" />
+		<input type="submit" onclick="YPhoto.getAlbums($('#login').val());" value="Отправить" />
 
 		<div id="updateAjaxDiv">
 			<div id="albums">
-				<div class="topRow"> </div>
+				<div class="topRow"> 
+					<div class="slider album-bag"> 
+					
+					</div>
+				</div>
 			</div>
 			<div id="photos"> </div>
 		</div>
@@ -32,13 +39,11 @@
 </html>
 
 <script id="albumTmpl" type="text/x-jquery-tmpl">
-	<div class="album-bag">
+	<div>
 		<a onclick="YPhoto.GetPhotosInAlbum('${links.photos}', '${id}'); return false;">
-			<img src="${img.S.href}"/>
+			<img src="${img.S.href}" alt="${title}" />
 		</a>
-		<h4>
-			${title}
-		</h4>
+		<h5>${title}</h2>
 	</div>
 </script>
 

@@ -1,5 +1,5 @@
 var YPhoto = (function() {
-	var current = '';
+	var currentAlbum = '';
 	
 	var GetPhotos = function(data, albumId) {
 		for(var i=0; i < data.entries.length; i++) {
@@ -18,23 +18,29 @@ var YPhoto = (function() {
 	}
 
 	return {
-		getAlbums: function() {
+		getAlbums: function(login) {
 			$.ajax({
 				type: "GET",
 				crossDomain: true,
 				dataType: "jsonp",
-				url: "http://api-fotki.yandex.ru/api/users/aleks2042/albums/?format=json"
+				url: "http://api-fotki.yandex.ru/api/users/" + login + "/albums/?format=json"
 			}).done(function(data) {
 				for(var i=0; i < data.entries.length; i++) {
 					data.entries[i].id = 'album_' + i;
-					$('#albumTmpl').tmpl(data.entries[i]).appendTo('.topRow');
+					$('#albumTmpl').tmpl(data.entries[i]).appendTo('.album-bag');
 
 					$('<div/>', {id: data.entries[i].id}).appendTo('#photos');
 				}
+				
+				$(".album-bag").slick({
+					infinite: true,
+					slidesToShow: 5,
+					slidesToScroll: 5
+				});
 			});
 		},
 		
-		GetPhotosInAlbum: function(url, albumId, showNext = false) {
+		GetPhotosInAlbum: function(url, albumId, showNext) {
 			$.ajax({
 				type: "GET",
 				crossDomain: true,
@@ -46,13 +52,13 @@ var YPhoto = (function() {
 				if (showNext) {
 					GetPhotos(data, albumId);
 				}
-				else if(!$('#photos > ' + '#' + albumId + ' > div').is('.photo') || current != albumId) {
+				else if(!$('#photos > ' + '#' + albumId + ' > div').is('.photo') || currentAlbum != albumId) {
 					$('#photos > div').hide();
 					$('#'+albumId).show();
 					GetPhotos(data, albumId);
 				}
 
-				current = albumId;
+				currentAlbum = albumId;
 			});
 		}		
 	}
