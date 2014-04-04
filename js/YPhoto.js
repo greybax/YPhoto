@@ -1,6 +1,6 @@
 var YPhoto = (function() {
 	var currentAlbum = '';
-	
+
 	var GetPhotos = function(data, albumId) {
 		for(var i=0; i < data.entries.length; i++) {
 			$('#photosTmpl').tmpl(data.entries[i]).appendTo('#'+albumId);
@@ -15,15 +15,27 @@ var YPhoto = (function() {
 			effect:'bounce',
 			fullscreen: true
 		});
-	}
+	};
 
 	return {
-		getAlbums: function(login) {
+
+        getServiceDocument: function(login) {
+            $.ajax({
+                type: "GET",
+                crossDomain: true,
+                dataType: "jsonp",
+                url: "http://api-fotki.yandex.ru/api/users/" + login + "/?format=json"
+            }).done(function(data) {
+                $('#mainTmpl').tmpl(data).appendTo('#updateAjaxDiv');
+            });
+        },
+
+		getAlbums: function(url) {
 			$.ajax({
 				type: "GET",
 				crossDomain: true,
 				dataType: "jsonp",
-				url: "http://api-fotki.yandex.ru/api/users/" + login + "/albums/?format=json"
+				url: url + "?format=json"
 			}).done(function(data) {
 				for(var i=0; i < data.entries.length; i++) {
 					data.entries[i].id = 'album_' + i;
@@ -31,7 +43,7 @@ var YPhoto = (function() {
 
 					$('<div/>', {id: data.entries[i].id}).appendTo('#photos');
 				}
-				
+
 				$(".album-bag").slick({
 					infinite: true,
 					slidesToShow: 5,
@@ -39,8 +51,34 @@ var YPhoto = (function() {
 				});
 			});
 		},
-		
-		GetPhotosInAlbum: function(url, albumId, showNext) {
+
+        getPhotos: function(url) {
+            $.ajax({
+                type: "GET",
+                crossDomain: true,
+                dataType: "jsonp",
+                url: url + "?format=json"
+            }).done(function(data) {
+                for(var i=0; i < data.entries.length; i++) {
+                    var a = data.entries[i];
+                }
+            });
+        },
+
+        getTags: function(url) {
+            $.ajax({
+                type: "GET",
+                crossDomain: true,
+                dataType: "jsonp",
+                url: url + "?format=json"
+            }).done(function(data) {
+                for(var i=0; i < data.entries.length; i++) {
+                    var a = data.entries[i];
+                }
+            });
+        },
+
+		getPhotosInAlbum: function(url, albumId, showNext) {
 			$.ajax({
 				type: "GET",
 				crossDomain: true,
@@ -60,7 +98,7 @@ var YPhoto = (function() {
 
 				currentAlbum = albumId;
 			});
-		}		
+		}
 	}
-	
+
 }());
