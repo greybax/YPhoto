@@ -37,18 +37,11 @@ var YPhoto = (function() {
 				dataType: "jsonp",
 				url: url + "?format=json"
 			}).done(function(data) {
+                $('#albums a').tab('show');
+
 				for(var i=0; i < data.entries.length; i++) {
-					data.entries[i].id = 'album_' + i;
-					$('#albumTmpl').tmpl(data.entries[i]).appendTo('.album-bag');
-
-					$('<div/>', {id: data.entries[i].id}).appendTo('#photos');
+					$('#albumTmpl').tmpl(data.entries[i]).appendTo('#album-bag .row');
 				}
-
-				$(".album-bag").slick({
-					infinite: true,
-					slidesToShow: 5,
-					slidesToScroll: 5
-				});
 			});
 		},
 
@@ -59,8 +52,10 @@ var YPhoto = (function() {
                 dataType: "jsonp",
                 url: url + "?format=json"
             }).done(function(data) {
+                $('#photos a').tab('show');
+
                 for(var i=0; i < data.entries.length; i++) {
-                    var a = data.entries[i];
+                    $('#photosTmpl').tmpl(data.entries[i]).appendTo('#photo-bag .row');
                 }
             });
         },
@@ -72,8 +67,10 @@ var YPhoto = (function() {
                 dataType: "jsonp",
                 url: url + "?format=json"
             }).done(function(data) {
+                $('#tags a').tab('show');
+
                 for(var i=0; i < data.entries.length; i++) {
-                    var a = data.entries[i];
+                    $('#tagsTmpl').tmpl(data.entries[i]).appendTo('#tag-bag .list-group');
                 }
             });
         },

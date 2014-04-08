@@ -3,17 +3,18 @@
 		<!--Libs -->
 		<script type="text/javascript" src="js/lib/jquery-1.10.2.min.js"></script>
 		<script type="text/javascript" src="js/lib/jquery.tmpl.js"></script>
-		<script type="text/javascript" src="js/lib/slick.js"></script>
 		<script type="text/javascript" src="js/lib/glisse.js"></script>
+        <script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
 		
 		<!-- Modules -->
 		<script type="text/javascript" src="js/Auth.js"></script>
 		<script type="text/javascript" src="js/YPhoto.js"></script>
 
 		<!-- CSS -->
-		<link rel="stylesheet" href="styles/slick.css"/>
 		<link rel="stylesheet" href="styles/style.css"/>
 		<link rel="stylesheet" href="styles/glisse.css"/>
+        <link rel="stylesheet" href="styles/bootstrap.min.css">
+        <link rel="stylesheet" href="styles/bootstrap-theme.min.css">
 	</head>
 
 	<body>
@@ -21,14 +22,6 @@
 		<input type="submit" onclick="YPhoto.getServiceDocument($('#login').val());" value="Отправить" />
 
 		<div id="updateAjaxDiv">
-            <!--<div id="albums">
-                <div class="topRow">
-                    <div class="slider album-bag">
-
-                    </div>
-                </div>
-            </div>
-            <div id="photos"> </div> -->
         </div>
 
 		<div>
@@ -39,33 +32,63 @@
 </html>
 
 <script id="mainTmpl" type="text/x-jquery-tmpl">
-    <div id="albums">
-        <a onclick="YPhoto.getAlbums('${collections['album-list']['href']}'); return false;">${collections['album-list']['title']}</a>
-    </div>
-    <div id="photos">
-        <a onclick="YPhoto.getPhotos('${collections['photo-list']['href']}'); return false;">${collections['photo-list']['title']}</a>
-    </div>
-    <div id="tags">
-        <a onclick="YPhoto.getTags('${collections['tag-list']['href']}'); return false;">${collections['tag-list']['title']}</a>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" id="mainTab">
+      <li id="albums" class="active">
+        <a onclick="YPhoto.getAlbums('${collections['album-list']['href']}'); return false;" data-toggle="tab" href="#album-bag">
+            ${collections['album-list']['title']}
+        </a>
+      </li>
+      <li id="photos">
+        <a onclick="YPhoto.getPhotos('${collections['photo-list']['href']}'); return false;" data-toggle="tab" href="#photo-bag">
+            ${collections['photo-list']['title']}
+        </a>
+      </li>
+      <li id="tags">
+        <a onclick="YPhoto.getTags('${collections['tag-list']['href']}'); return false;" data-toggle="tab" href="#tag-bag">
+            ${collections['tag-list']['title']}
+        </a>
+      </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane active" id="album-bag">
+        <div class="row"> </div>
+      </div>
+      <div class="tab-pane" id="photo-bag">
+        <div class="row"> </div>
+      </div>
+      <div class="tab-pane" id="tag-bag">
+        <ul class="list-group"> </ul>
+      </div>
     </div>
 </script>
 
 <script id="albumTmpl" type="text/x-jquery-tmpl">
-	<div>
-		<a onclick="YPhoto.getPhotosInAlbum('${links.photos}', '${id}'); return false;">
-			<img src="${img.S.href}" alt="${title}" />
-		</a>
-		<h5>${title}</h2>
-	</div>
+    <div class="col-xs-6 col-md-3">
+        <a class="thumbnail" onclick="YPhoto.getPhotosInAlbum('${links.photos}', '${id}'); return false;">
+            <img src="${img.S.href}" alt="${title}"/>
+        </a>
+    </div>
 </script>
 
 
 <script id="photosTmpl" type="text/x-jquery-tmpl">
-	<div class="photo">
-		<img class="pics" src="${img.S.href}" data-glisse-big="${img.XXL.href}" rel="group1"/>
-	</div>
+    <div class="col-xs-6 col-md-3">
+        <a class="thumbnail">
+            <img src="${img.S.href}" data-glisse-big="${img.S.href}" rel="group1"/>
+        </a>
+    </div>
+</script>
+
+<script id="tagsTmpl" type="text/x-jquery-tmpl">
+    <li class="list-group-item">
+        <span class="badge">${imageCount}</span>
+        ${title}
+    </li>
 </script>
 
 <script id="nextTmpl" type="text/x-jquery-tmpl">
-	<input type="button" onclick="YPhoto.getPhotosInAlbum('${links.next}', '${id}', true); return false;" class="ksb" id="smb" value="Еще фото">
+    <input type="button" onclick="YPhoto.getPhotosInAlbum('${links.next}', '${id}', true); return false;" value="Еще фото">
 </script>
